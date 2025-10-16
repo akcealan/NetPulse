@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html class="light" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Çalışma Zamanlayıcısı</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#5D9CEC",
+              "background-light": "#F9FAFB",
+              "background-dark": "#1F2937",
+              "text-light": "#333333",
+              "text-dark": "#F9FAFB",
+              success: "#4CAF50",
+            },
+            fontFamily: {
+              display: ["Inter", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+              lg: "0.75rem",
+              xl: "1rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="sticky top-0 z-10 flex items-center justify-between whitespace-nowrap border-b border-gray-200/80 dark:border-gray-700/80 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm px-6 lg:px-10 py-3">
+<div class="flex items-center gap-4 text-text-light dark:text-text-dark">
+<div class="size-7 text-primary">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 4H17.3334V17.3334H30.6666V30.6666H44V44H4V4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em]">NetPulse</h2>
+</div>
+<div class="hidden lg:flex flex-1 justify-center gap-8">
+<a class="text-text-light/80 dark:text-text-dark/80 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal" href="index.html">Panel</a>
+<a class="text-text-light/80 dark:text-text-dark/80 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal" href="dataentry.html">Veri Girişi</a>
+<a class="text-text-light/80 dark:text-text-dark/80 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal" href="stats.html">İstatistikler</a>
+<a class="text-primary text-sm font-medium leading-normal" href="timer.html">Kronometre</a>
+<a class="text-text-light/80 dark:text-text-dark/80 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal" href="settings.html">Ayarlar</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 w-10 bg-gray-200/70 dark:bg-gray-700/70 text-text-light dark:text-text-dark hover:bg-gray-300 dark:hover:bg-gray-600">
+<span class="material-symbols-outlined dark:hidden">dark_mode</span>
+<span class="material-symbols-outlined hidden dark:inline">light_mode</span>
+</button>
+<button class="lg:hidden flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 w-10 bg-gray-200/70 dark:bg-gray-700/70 text-text-light dark:text-text-dark hover:bg-gray-300 dark:hover:bg-gray-600">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+<div class="px-4 sm:px-10 md:px-20 lg:px-40 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+<main class="flex flex-col items-center justify-center flex-grow py-10 sm:py-20">
+<div class="flex flex-col items-center gap-8 w-full px-4">
+<div class="grid grid-cols-3 gap-2 sm:gap-4 w-full max-w-md">
+<div class="flex flex-col items-center gap-2">
+<div class="flex h-24 sm:h-32 w-full items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
+<p class="text-5xl sm:text-7xl font-black text-text-light dark:text-text-dark tracking-tighter">00</p>
+</div>
+<div class="flex items-center justify-center">
+<p class="text-sm sm:text-base font-medium text-gray-500 dark:text-gray-400">Saat</p>
+</div>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="flex h-24 sm:h-32 w-full items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
+<p class="text-5xl sm:text-7xl font-black text-text-light dark:text-text-dark tracking-tighter">00</p>
+</div>
+<div class="flex items-center justify-center">
+<p class="text-sm sm:text-base font-medium text-gray-500 dark:text-gray-400">Dakika</p>
+</div>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="flex h-24 sm:h-32 w-full items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
+<p class="text-5xl sm:text-7xl font-black text-text-light dark:text-text-dark tracking-tighter">00</p>
+</div>
+<div class="flex items-center justify-center">
+<p class="text-sm sm:text-base font-medium text-gray-500 dark:text-gray-400">Saniye</p>
+</div>
+</div>
+</div>
+<div class="flex w-full max-w-md flex-col gap-3 sm:gap-4 mt-4">
+<div class="flex flex-col sm:flex-row w-full gap-3 sm:gap-4">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-6 bg-success text-white text-lg font-bold leading-normal tracking-wide grow transition-transform duration-200 hover:scale-105 active:scale-95">
+<span class="truncate">Başlat</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-6 bg-primary text-white text-lg font-bold leading-normal tracking-wide grow transition-transform duration-200 hover:scale-105 active:scale-95">
+<span class="truncate">Durdur</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-6 bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark text-lg font-bold leading-normal tracking-wide grow transition-transform duration-200 hover:scale-105 active:scale-95">
+<span class="truncate">Sıfırla</span>
+</button>
+</div>
+<button class="flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl h-14 px-6 bg-gray-800 text-white text-lg font-bold leading-normal tracking-wide transition-transform duration-200 hover:scale-105 active:scale-95 dark:bg-gray-200 dark:text-text-light">
+<span class="material-symbols-outlined">send</span>
+<span class="truncate">Süreyi Aktar</span>
+</button>
+</div>
+</div>
+</main>
+</div>
+</div>
+</div>
+</div>
+<script src="js/theme.js"></script>
+</body></html>
