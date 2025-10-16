@@ -55,12 +55,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function loadAllStatistics() {
         const courses = Storage.getCourses();
+        const allSessions = Storage.getSessions();
         const sessions = getFilteredSessions();
 
-        if (sessions.length === 0) {
+        // Hiç veri yoksa (tüm zamanlar için bile)
+        if (allSessions.length === 0) {
             showEmptyState();
             return;
         }
+
+        // Filtrelenmiş veri yoksa ama genel veri varsa
+        if (sessions.length === 0) {
+            showNoDataForFilter();
+            return;
+        }
+
+        // Bölümleri göster (gizli olabilirler)
+        showAllSections();
 
         // Genel istatistikleri göster
         displayGeneralStats(sessions);
@@ -474,10 +485,36 @@ document.addEventListener('DOMContentLoaded', function() {
         const container = document.getElementById('trendAnalysis');
         if (!container) return;
 
-        const last7Days = [];
         const now = new Date();
+        let daysToShow = 7;
+        let title = 'Son 7 Gün Trend Analizi';
+        let dateFormat = { weekday: 'short' };
         
-        for (let i = 6; i >= 0; i--) {
+        // Filtreye göre gün sayısını belirle
+        if (activeFilter === 'month') {
+            // Bu ayın gün sayısını hesapla
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            daysToShow = new Date(year, month + 1, 0).getDate();
+            title = `Bu Ay Trend Analizi (${daysToShow} Gün)`;
+            dateFormat = { day: 'numeric' };
+        } else if (activeFilter === 'week') {
+            daysToShow = 7;
+            title = 'Bu Hafta Trend Analizi';
+            dateFormat = { weekday: 'short' };
+        } else if (activeFilter === 'today') {
+            daysToShow = 1;
+            title = 'Bugün';
+            dateFormat = { hour: '2-digit', minute: '2-digit' };
+        } else {
+            daysToShow = 7;
+            title = 'Son 7 Gün Trend Analizi';
+            dateFormat = { weekday: 'short' };
+        }
+
+        const trendDays = [];
+        
+        for (let i = daysToShow - 1; i >= 0; i--) {
             const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
             const dateStr = date.toISOString().split('T')[0];
             const daySessions = sessions.filter(s => s.date === dateStr);
@@ -485,53 +522,65 @@ document.addEventListener('DOMContentLoaded', function() {
             const totalNet = daySessions.reduce((sum, s) => sum + s.net, 0);
             const totalQuestions = daySessions.reduce((sum, s) => sum + s.correct + s.incorrect + s.blank, 0);
             
-            last7Days.push({
+            trendDays.push({
                 date: dateStr,
-                dayName: date.toLocaleDateString('tr-TR', { weekday: 'short' }),
+                dayName: date.toLocaleDateString('tr-TR', dateFormat),
                 sessionCount: daySessions.length,
                 totalNet,
                 totalQuestions
             });
         }
 
-        const maxNet = Math.max(...last7Days.map(d => d.totalNet), 1);
-        const maxQuestions = Math.max(...last7Days.map(d => d.totalQuestions), 1);
+        const maxNet = Math.max(...trendDays.map(d => d.totalNet), 1);
+        const maxQuestions = Math.max(...trendDays.map(d => d.totalQuestions), 1);
+        
+        // Çok fazla gün varsa minimum genişlik belirle
+        const minWidth = daysToShow > 15 ? 'min-w-[20px]' : '';
+        const textSize = daysToShow > 20 ? 'text-[10px]' : 'text-xs';
 
         container.innerHTML = `
             <div class="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-bold text-text-light dark:text-text-dark mb-6">Son 7 Gün Trend Analizi</h3>
+                <h3 class="text-lg font-bold text-text-light dark:text-text-dark mb-6">${title}</h3>
                 
                 <div class="mb-8">
                     <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Günlük Net</p>
-                    <div class="flex items-end justify-between gap-2 h-40">
-                        ${last7Days.map(day => `
-                            <div class="flex-1 flex flex-col items-center gap-2">
-                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-t relative" style="height: ${(day.totalNet / maxNet * 100)}%">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-primary to-blue-300 rounded-t"></div>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-xs font-bold text-text-light dark:text-text-dark">${day.totalNet.toFixed(1)}</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">${day.dayName}</p>
+                    <div class="flex items-end justify-between gap-1 h-40 border-b-2 border-gray-300 dark:border-gray-600 pb-2 overflow-x-auto">
+                        ${trendDays.map(day => {
+                            const heightPx = day.totalNet > 0 ? Math.max((day.totalNet / maxNet * 150), 10) : 0;
+                            return `
+                            <div class="flex-1 ${minWidth} flex flex-col items-center justify-end gap-2">
+                                ${day.totalNet > 0 ? `
+                                    <div class="w-full rounded-t relative transition-all duration-300 bg-gradient-to-t from-primary to-blue-300" style="height: ${heightPx}px; min-height: 10px;"></div>
+                                ` : `
+                                    <div class="w-full h-1 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                                `}
+                                <div class="text-center pt-2">
+                                    <p class="${textSize} font-bold text-text-light dark:text-text-dark">${day.totalNet.toFixed(1)}</p>
+                                    <p class="${textSize} text-gray-500 dark:text-gray-400">${day.dayName}</p>
                                 </div>
                             </div>
-                        `).join('')}
+                        `}).join('')}
                     </div>
                 </div>
                 
                 <div>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Günlük Soru Sayısı</p>
-                    <div class="flex items-end justify-between gap-2 h-32">
-                        ${last7Days.map(day => `
-                            <div class="flex-1 flex flex-col items-center gap-2">
-                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-t relative" style="height: ${(day.totalQuestions / maxQuestions * 100)}%">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-success to-green-300 rounded-t"></div>
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-xs font-bold text-text-light dark:text-text-dark">${day.totalQuestions}</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">${day.dayName}</p>
+                    <div class="flex items-end justify-between gap-1 h-32 border-b-2 border-gray-300 dark:border-gray-600 pb-2 overflow-x-auto">
+                        ${trendDays.map(day => {
+                            const heightPx = day.totalQuestions > 0 ? Math.max((day.totalQuestions / maxQuestions * 110), 10) : 0;
+                            return `
+                            <div class="flex-1 ${minWidth} flex flex-col items-center justify-end gap-2">
+                                ${day.totalQuestions > 0 ? `
+                                    <div class="w-full rounded-t relative transition-all duration-300 bg-gradient-to-t from-success to-green-300" style="height: ${heightPx}px; min-height: 10px;"></div>
+                                ` : `
+                                    <div class="w-full h-1 bg-gray-300 dark:bg-gray-600 rounded"></div>
+                                `}
+                                <div class="text-center pt-2">
+                                    <p class="${textSize} font-bold text-text-light dark:text-text-dark">${day.totalQuestions}</p>
+                                    <p class="${textSize} text-gray-500 dark:text-gray-400">${day.dayName}</p>
                                 </div>
                             </div>
-                        `).join('')}
+                        `}).join('')}
                     </div>
                 </div>
             </div>
@@ -639,5 +688,56 @@ document.addEventListener('DOMContentLoaded', function() {
                 </a>
             </div>
         `;
+    }
+
+    function showAllSections() {
+        // Tüm bölümleri göster
+        const sections = ['courseStatsSection', 'topicStatsSection', 'trendAnalysisSection', 'detailedMetricsSection'];
+        sections.forEach(sectionId => {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.style.display = '';
+            }
+        });
+    }
+
+    function showNoDataForFilter() {
+        const filterNames = {
+            'today': 'Bugün',
+            'week': 'Bu Hafta',
+            'month': 'Bu Ay',
+            'all': 'Tüm Zamanlar'
+        };
+        
+        const filterName = filterNames[activeFilter] || 'Bu Filtre';
+        
+        // Tüm bölümleri gizle
+        const sections = ['courseStatsSection', 'topicStatsSection', 'trendAnalysisSection', 'detailedMetricsSection'];
+        sections.forEach(sectionId => {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.style.display = 'none';
+            }
+        });
+        
+        // Genel istatistikler alanına mesaj göster
+        const generalStats = document.getElementById('generalStats');
+        if (generalStats) {
+            generalStats.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-20 text-center">
+                    <span class="material-symbols-outlined text-6xl text-gray-300 dark:text-gray-600 mb-4">event_busy</span>
+                    <h2 class="text-2xl font-bold text-gray-400 dark:text-gray-500 mb-2">${filterName} İçin Veri Yok</h2>
+                    <p class="text-gray-400 dark:text-gray-500 mb-6">Bu zaman diliminde henüz çalışma kaydı bulunmuyor.</p>
+                    <div class="flex gap-3">
+                        <button onclick="document.querySelector('[data-filter=all]').click()" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                            Tüm Verileri Göster
+                        </button>
+                        <a href="dataentry.html" class="px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                            Yeni Kayıt Ekle
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
     }
 });
