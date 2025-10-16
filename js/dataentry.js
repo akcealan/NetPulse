@@ -281,12 +281,12 @@ document.addEventListener('DOMContentLoaded', function() {
         courseSelect.value = '';
         topicSelect.value = '';
         topicSelect.disabled = true;
-        correctInput.value = '0';
-        incorrectInput.value = '0';
-        blankInput.value = '0';
-        hoursInput.value = '0';
-        minutesInput.value = '0';
-        secondsInput.value = '0';
+        correctInput.value = '';
+        incorrectInput.value = '';
+        blankInput.value = '';
+        hoursInput.value = '';
+        minutesInput.value = '';
+        secondsInput.value = '';
         
         // Konular listesini sıfırla
         topicsList.innerHTML = '<li>- Konuları görmek için bir ders seçin -</li>';
@@ -300,21 +300,33 @@ document.addEventListener('DOMContentLoaded', function() {
         // Timer sayfasından gelen süre verisi varsa
         const timerData = Storage.get(Storage.KEYS.TIMER_STATE);
         
+        console.log('Timer Data:', timerData); // Debug
+        
         if (timerData && timerData.transferToDataEntry) {
             const totalSeconds = timerData.seconds;
             const hours = Math.floor(totalSeconds / 3600);
             const minutes = Math.floor((totalSeconds % 3600) / 60);
             const seconds = totalSeconds % 60;
             
+            console.log('Calculated time:', { hours, minutes, seconds }); // Debug
+            
             hoursInput.value = hours;
             minutesInput.value = minutes;
             secondsInput.value = seconds;
+            
+            console.log('Input values set:', {
+                hours: hoursInput.value,
+                minutes: minutesInput.value,
+                seconds: secondsInput.value
+            }); // Debug
             
             // Transfer flag'ini temizle
             timerData.transferToDataEntry = false;
             Storage.set(Storage.KEYS.TIMER_STATE, timerData);
             
             showNotification('Kronometre süresi aktarıldı!', 'success');
+        } else {
+            console.log('No timer data to transfer'); // Debug
         }
     }
 

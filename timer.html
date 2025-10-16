@@ -74,7 +74,7 @@
 <div class="grid grid-cols-3 gap-2 sm:gap-4 w-full max-w-md">
 <div class="flex flex-col items-center gap-2">
 <div class="flex h-24 sm:h-32 w-full items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
-<p class="text-5xl sm:text-7xl font-black text-text-light dark:text-text-dark tracking-tighter">00</p>
+<p id="hoursDisplay" class="text-5xl sm:text-7xl font-black text-text-light dark:text-text-dark tracking-tighter">00</p>
 </div>
 <div class="flex items-center justify-center">
 <p class="text-sm sm:text-base font-medium text-gray-500 dark:text-gray-400">Saat</p>
@@ -82,7 +82,7 @@
 </div>
 <div class="flex flex-col items-center gap-2">
 <div class="flex h-24 sm:h-32 w-full items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
-<p class="text-5xl sm:text-7xl font-black text-text-light dark:text-text-dark tracking-tighter">00</p>
+<p id="minutesDisplay" class="text-5xl sm:text-7xl font-black text-text-light dark:text-text-dark tracking-tighter">00</p>
 </div>
 <div class="flex items-center justify-center">
 <p class="text-sm sm:text-base font-medium text-gray-500 dark:text-gray-400">Dakika</p>
@@ -90,7 +90,7 @@
 </div>
 <div class="flex flex-col items-center gap-2">
 <div class="flex h-24 sm:h-32 w-full items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
-<p class="text-5xl sm:text-7xl font-black text-text-light dark:text-text-dark tracking-tighter">00</p>
+<p id="secondsDisplay" class="text-5xl sm:text-7xl font-black text-text-light dark:text-text-dark tracking-tighter">00</p>
 </div>
 <div class="flex items-center justify-center">
 <p class="text-sm sm:text-base font-medium text-gray-500 dark:text-gray-400">Saniye</p>
@@ -99,17 +99,17 @@
 </div>
 <div class="flex w-full max-w-md flex-col gap-3 sm:gap-4 mt-4">
 <div class="flex flex-col sm:flex-row w-full gap-3 sm:gap-4">
-<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-6 bg-success text-white text-lg font-bold leading-normal tracking-wide grow transition-transform duration-200 hover:scale-105 active:scale-95">
+<button id="startBtn" class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-6 bg-success text-white text-lg font-bold leading-normal tracking-wide grow transition-transform duration-200 hover:scale-105 active:scale-95">
 <span class="truncate">Başlat</span>
 </button>
-<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-6 bg-primary text-white text-lg font-bold leading-normal tracking-wide grow transition-transform duration-200 hover:scale-105 active:scale-95">
+<button id="pauseBtn" class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-6 bg-primary text-white text-lg font-bold leading-normal tracking-wide grow transition-transform duration-200 hover:scale-105 active:scale-95" disabled>
 <span class="truncate">Durdur</span>
 </button>
-<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-6 bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark text-lg font-bold leading-normal tracking-wide grow transition-transform duration-200 hover:scale-105 active:scale-95">
+<button id="resetBtn" class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-6 bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark text-lg font-bold leading-normal tracking-wide grow transition-transform duration-200 hover:scale-105 active:scale-95">
 <span class="truncate">Sıfırla</span>
 </button>
 </div>
-<button class="flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl h-14 px-6 bg-gray-800 text-white text-lg font-bold leading-normal tracking-wide transition-transform duration-200 hover:scale-105 active:scale-95 dark:bg-gray-200 dark:text-text-light">
+<button id="transferBtn" class="flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl h-14 px-6 bg-gray-800 text-white text-lg font-bold leading-normal tracking-wide transition-transform duration-200 hover:scale-105 active:scale-95 dark:bg-gray-200 dark:text-text-light" disabled>
 <span class="material-symbols-outlined">send</span>
 <span class="truncate">Süreyi Aktar</span>
 </button>
@@ -120,5 +120,7 @@
 </div>
 </div>
 </div>
+<script src="js/storage.js"></script>
+<script src="js/timer.js"></script>
 <script src="js/theme.js"></script>
 </body></html>

@@ -74,6 +74,15 @@
   - Progress visualization
   - Recent sessions display
   - Course distribution charts
+
+- **timer.js**: Timer/Stopwatch controller
+  - Stopwatch functionality (start/pause/reset)
+  - Time tracking with setInterval
+  - LocalStorage state persistence
+  - Auto-resume on page reload
+  - Elapsed time calculation
+  - Data entry integration
+  - Keyboard shortcuts
   
 - **theme.js**: Dark/light mode toggle
 

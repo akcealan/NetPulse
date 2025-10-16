@@ -45,7 +45,9 @@
 3. Module Communication
    - Storage module as single source of truth
    - Event-driven UI updates
-   - Page-specific controllers (dataentry.js)
+   - Page-specific controllers (dataentry.js, dashboard.js, timer.js)
+   - Cross-page data transfer via LocalStorage
+   - State persistence and restoration
 
 ## Interface Patterns
 
