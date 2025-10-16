@@ -138,6 +138,43 @@ Tüm Verileri Sil
 </div>
 </div>
 </div>
+
+<!-- Modal: Tüm Verileri Sil -->
+<div id="deleteAllModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full p-6 transform transition-all">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xl font-bold text-red-600 dark:text-red-400">⚠️ Dikkat!</h3>
+            <button onclick="closeModal('deleteAllModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="space-y-4">
+            <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                <p class="text-red-800 dark:text-red-200 font-medium mb-2">Tüm verileriniz silinecek!</p>
+                <ul class="text-sm text-red-700 dark:text-red-300 space-y-1 list-disc list-inside">
+                    <li>Tüm dersler</li>
+                    <li>Tüm konular</li>
+                    <li>Tüm çalışma kayıtları</li>
+                    <li>Tüm istatistikler</li>
+                </ul>
+            </div>
+            <p class="text-gray-600 dark:text-gray-300 text-sm">
+                Bu işlem <strong>geri alınamaz</strong>. Devam etmek istediğinize emin misiniz?
+            </p>
+            <div class="flex gap-3">
+                <button onclick="closeModal('deleteAllModal')" 
+                    class="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 text-text-light dark:text-text-dark hover:bg-gray-100 dark:hover:bg-gray-700 font-medium transition-colors">
+                    İptal
+                </button>
+                <button onclick="confirmDeleteAll()" 
+                    class="flex-1 px-4 py-3 rounded-lg bg-red-600 text-white hover:bg-red-700 font-bold transition-colors">
+                    Evet, Sil
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="js/storage.js"></script>
 <script src="js/settings.js"></script>
 <script src="js/theme.js"></script>

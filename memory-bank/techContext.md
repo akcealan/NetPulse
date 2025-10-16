@@ -67,6 +67,9 @@
   - Form handling and validation
   - Dynamic UI updates
   - Event management
+  - Modal-based course/topic addition
+  - Enter key form submission
+  - Real-time course/topic list updates
   
 - **dashboard.js**: Dashboard/Index page controller
   - Statistics calculation and display
@@ -89,20 +92,27 @@
   - JSON export (Blob + download)
   - JSON import (FileReader API)
   - File validation
-  - Delete all data with confirmations
+  - Modal-based delete confirmation (replaced confirm dialogs)
   - Page refresh after operations
+  - ESC key modal closing
 
 - **stats.js**: Enhanced statistics page controller
   - Time-based filtering (Today/Week/Month/All)
+  - **Local timezone handling** (fixed UTC issues)
+  - Week filtering (Monday-based, not last 7 days)
+  - Month filtering (1st day-based, not last 30 days)
   - General statistics calculations
   - Course-based performance analysis
   - Topic-based analysis (top 5 best/worst)
-  - Trend analysis with 7-day bar charts
+  - **Dynamic trend analysis**:
+    - Daily charts for Today/Week/Month
+    - Monthly charts for All Time (ergonomic for 1-year data)
   - Detailed metrics (streak, avg time per question)
   - Success rate and net calculations
   - Weekly improvement tracking
   - Study streak calculation algorithm
   - Empty state handling
+  - Filter-specific empty states
   
 - **theme.js**: Dark/light mode toggle
 

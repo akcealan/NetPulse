@@ -45,17 +45,24 @@
 3. Module Communication
    - Storage module as single source of truth
    - Event-driven UI updates
-   - Page-specific controllers (dataentry.js, dashboard.js, timer.js)
+   - Page-specific controllers (dataentry.js, dashboard.js, timer.js, stats.js, settings.js)
    - Cross-page data transfer via LocalStorage
    - State persistence and restoration
+   - Modal management (global functions)
+   - Local timezone handling for dates
 
 ## Interface Patterns
 
-- Consistent navigation
-- Form-based data entry
-- Modal/popup for new entries
-- Real-time updates
+- Consistent navigation across all pages
+- Form-based data entry with validation
+- **Modern modal system** (replaced browser prompts)
+  - Course/topic addition modals
+  - Delete confirmation modals
+  - ESC key and click-outside closing
+  - Enter key form submission
+- Real-time updates without page refresh
 - Animated statistics (requestAnimationFrame)
 - Progress bars with smooth transitions
 - Card-based dashboard layout
 - Responsive grid system
+- Notification toasts for user feedback

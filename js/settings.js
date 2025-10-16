@@ -180,31 +180,18 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Çift onay
-        const confirmMsg = `⚠️ DİKKAT! ⚠️\n\n` +
-            `Bu işlem GERİ ALINAMAZ!\n\n` +
-            `Silinecek:\n` +
-            `- ${courses.length} ders\n` +
-            `- ${sessions.length} çalışma kaydı\n\n` +
-            `Tüm verileriniz kalıcı olarak silinecek.\n\n` +
-            `Devam etmek istediğinize EMİN MİSİNİZ?`;
-        
-        if (!confirm(confirmMsg)) {
-            return;
-        }
-        
-        // İkinci onay
-        const finalConfirm = confirm('Son kez soruyoruz: Tüm verileri silmek istediğinize emin misiniz?');
-        
-        if (!finalConfirm) {
-            showNotification('İşlem iptal edildi', 'info');
-            return;
-        }
-        
+        // Modal'ı aç
+        openModal('deleteAllModal');
+    }
+
+    window.confirmDeleteAll = function() {
         // Tüm verileri sil
         Storage.set(Storage.KEYS.COURSES, []);
         Storage.set(Storage.KEYS.SESSIONS, []);
         Storage.remove(Storage.KEYS.TIMER_STATE);
+        
+        // Modal'ı kapat
+        closeModal('deleteAllModal');
         
         // İstatistikleri güncelle
         loadStatistics();
@@ -215,7 +202,42 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             window.location.href = 'index.html';
         }, 2000);
-    }
+    };
+
+    // === MODAL YÖNETİMİ ===
+
+    window.openModal = function(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.remove('hidden');
+        }
+    };
+
+    window.closeModal = function(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.add('hidden');
+        }
+    };
+
+    // ESC tuşu ile modal kapatma
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const modals = document.querySelectorAll('[id$="Modal"]');
+            modals.forEach(modal => {
+                if (!modal.classList.contains('hidden')) {
+                    closeModal(modal.id);
+                }
+            });
+        }
+    });
+
+    // Modal dışına tıklayınca kapatma
+    document.addEventListener('click', function(e) {
+        if (e.target.id && e.target.id.endsWith('Modal')) {
+            closeModal(e.target.id);
+        }
+    });
 
     // === YARDIMCI FONKSİYONLAR ===
 

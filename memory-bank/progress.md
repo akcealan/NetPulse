@@ -32,23 +32,32 @@
 - Statistics page fully implemented with advanced features
 - Time-based filtering (Today/Week/Month/All)
 - Topic-based analysis (top 5 best/worst)
-- Trend analysis with 7-day charts
+- Dynamic trend analysis (daily for recent, monthly for all-time)
 - Detailed metrics (streak, avg time, etc.)
 - Course-based performance analysis
 - Weekly improvement tracking
 - Success rate and net calculations
+- Modal system for all user interactions
+- Course/topic addition via modals (no more prompts)
+- Delete confirmation modal with detailed warnings
+- UTC timezone fixes for accurate date handling
+- Week filtering (Monday-based)
+- Month filtering (1st day-based)
+- Local date calculations throughout
 
 ## In Progress
 
-- None (Core features completed)
+- None (All planned features completed)
 
 ## To Do
 
-1. Enhanced Features
-   - Advanced data filtering
-   - Course/topic editing
-   - Data backup reminders
-   - Mobile responsive menu
+1. Future Enhancements
+   - Mobile responsive hamburger menu
+   - Course/topic editing (rename/modify)
+   - Automatic data backup reminders
+   - Advanced search across all data
+   - Export to PDF/Excel formats
+   - Performance optimizations for large datasets
 
 ## Known Issues
 

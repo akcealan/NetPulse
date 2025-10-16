@@ -2,31 +2,42 @@
 
 ## Current Focus
 
-- Statistics page implementation
-- Performance analysis
-- Course-based statistics
-- Progress tracking and insights
+- UI/UX improvements
+- Modal system implementation
+- Date/time handling fixes
+- Filter system optimization
 
 ## Recent Changes
 
-- Enhanced statistics page with advanced features
-- Added time-based filtering (Today/Week/Month/All)
-- Implemented topic-based analysis
-- Added trend analysis with 7-day charts
-- Detailed metrics (avg time per question, streak)
-- Top 5 best/worst topics display
-- Daily net and question count visualization
-- Study streak calculation
-- Interactive filter buttons
+- **Modal System Implementation**
+  - Replaced browser prompts/confirms with modern modals
+  - Course/topic addition via modal dialogs
+  - Delete confirmation modal in settings
+  - ESC key and click-outside to close
+  - Enter key support for form submission
+
+- **Date/Time Fixes**
+  - Fixed UTC timezone issues
+  - Local date calculation for accurate day names
+  - Proper week/month filtering (Monday-based weeks)
+  - Correct "today" detection regardless of time
+
+- **Enhanced Statistics**
+  - Time-based filtering (Today/Week/Month/All)
+  - Topic-based analysis (top 5 best/worst)
+  - Monthly trend analysis for "All Time" view
+  - Dynamic trend charts based on filter
+  - Study streak calculation
+  - Detailed metrics (avg time, questions per session)
 
 ## Next Steps
 
-1. Add data filtering and search
-2. Create mobile responsive menu
-3. Add lap/split time feature to timer
-4. Add data backup reminders
-5. Implement course/topic editing
-6. Add chart visualizations (optional)
+1. Mobile responsive menu
+2. Course/topic editing functionality
+3. Data backup reminders
+4. Advanced search/filtering
+5. Export to PDF/Excel
+6. Performance optimizations
 
 ## Active Decisions
 
@@ -52,3 +63,8 @@
 - Time-based data filtering
 - Trend analysis with bar charts
 - Streak calculation algorithm
+- Modal-based UI interactions
+- Local timezone handling
+- Dynamic chart grouping (daily/monthly)
+- Week-based filtering (Monday start)
+- Month-based filtering (1st day start)
