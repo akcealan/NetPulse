@@ -33,10 +33,19 @@
 
    - Course creation → Topic addition → Session recording
    - Timer → Data entry integration
+   - Real-time UI updates on data changes
 
 2. Storage Pattern
-   - Local storage for courses, topics, and sessions
-   - State management for timer
+   - Centralized Storage module (storage.js)
+   - JSON-based LocalStorage persistence
+   - Automatic data validation
+   - CRUD operations for all entities
+   - Cascading deletes (course → topics → sessions)
+
+3. Module Communication
+   - Storage module as single source of truth
+   - Event-driven UI updates
+   - Page-specific controllers (dataentry.js)
 
 ## Interface Patterns
 
