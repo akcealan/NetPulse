@@ -79,61 +79,50 @@
 <span class="material-symbols-outlined text-primary text-3xl">functions</span>
 <p class="text-text-light/80 dark:text-text-dark/80 text-base font-medium leading-normal">Toplam Soru</p>
 </div>
-<p class="text-text-light dark:text-text-dark tracking-light text-4xl font-bold leading-tight">120</p>
+<p id="totalQuestions" class="text-text-light dark:text-text-dark tracking-light text-4xl font-bold leading-tight">0</p>
 </div>
 <div class="flex flex-col gap-2 rounded-lg p-6 bg-white dark:bg-gray-800/50 shadow-sm border border-gray-200 dark:border-gray-700/50">
 <div class="flex items-center gap-3">
 <span class="material-symbols-outlined text-success text-3xl">check_circle</span>
 <p class="text-text-light/80 dark:text-text-dark/80 text-base font-medium leading-normal">Toplam Doğru</p>
 </div>
-<p class="text-success tracking-light text-4xl font-bold leading-tight">105</p>
+<p id="totalCorrect" class="text-success tracking-light text-4xl font-bold leading-tight">0</p>
 </div>
 <div class="flex flex-col gap-2 rounded-lg p-6 bg-white dark:bg-gray-800/50 shadow-sm border border-gray-200 dark:border-gray-700/50">
 <div class="flex items-center gap-3">
 <span class="material-symbols-outlined text-primary text-3xl">timer</span>
 <p class="text-text-light/80 dark:text-text-dark/80 text-base font-medium leading-normal">Toplam Süre</p>
 </div>
-<p class="text-text-light dark:text-text-dark tracking-light text-4xl font-bold leading-tight">1s 30d</p>
+<p id="totalDuration" class="text-text-light dark:text-text-dark tracking-light text-4xl font-bold leading-tight">0dk</p>
 </div>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 <div class="lg:col-span-2 flex flex-col gap-6">
 <div class="flex flex-col gap-4 p-6 rounded-lg bg-white dark:bg-gray-800/50 shadow-sm border border-gray-200 dark:border-gray-700/50">
 <div class="flex gap-6 justify-between items-center">
-<p class="text-text-light dark:text-text-dark text-base font-medium leading-normal">Günlük Hedef</p>
-<p class="text-primary text-sm font-semibold leading-normal">75%</p>
+<p class="text-text-light dark:text-text-dark text-base font-medium leading-normal">Bugünkü Çalışma</p>
+<p id="todayPercentage" class="text-primary text-sm font-semibold leading-normal">0%</p>
 </div>
 <div class="w-full rounded-full bg-gray-200 dark:bg-gray-700">
-<div class="h-2.5 rounded-full bg-primary" style="width: 75%;"></div>
+<div id="todayProgressBar" class="h-2.5 rounded-full bg-primary transition-all duration-500" style="width: 0%;"></div>
 </div>
+<p id="todayStats" class="text-text-light/70 dark:text-text-dark/70 text-sm">Bugün henüz çalışma kaydı yok</p>
 </div>
 <div class="flex flex-col gap-2 p-6 rounded-lg bg-white dark:bg-gray-800/50 shadow-sm border border-gray-200 dark:border-gray-700/50">
-<p class="text-text-light dark:text-text-dark text-base font-medium leading-normal">Haftalık İlerleme</p>
-<div class="flex min-h-[240px] flex-1 flex-col gap-8 py-4">
-<svg class="w-full h-full" fill="none" height="100%" preserveAspectRatio="none" viewBox="0 0 475 150" width="100%" xmlns="http://www.w3.org/2000/svg">
-<path class="" d="M0 109C18.2692 109 18.2692 21 36.5385 21C54.8077 21 54.8077 41 73.0769 41C91.3462 41 91.3462 93 109.615 93C127.885 93 127.885 33 146.154 33C164.423 33 164.423 101 182.692 101C200.962 101 200.962 61 219.231 61C237.5 61 237.5 45 255.769 45C274.038 45 274.038 121 292.308 121C310.577 121 310.577 149 328.846 149C347.115 149 347.115 1 365.385 1C383.654 1 383.654 81 401.923 81C420.192 81 420.192 129 438.462 129C456.731 129 456.731 25 475 25V149H328.846H0V109Z" fill="url(#paint0_linear_dashboard)"></path>
-<path d="M0 109C18.2692 109 18.2692 21 36.5385 21C54.8077 21 54.8077 41 73.0769 41C91.3462 41 91.3462 93 109.615 93C127.885 93 127.885 33 146.154 33C164.423 33 164.423 101 182.692 101C200.962 101 200.962 61 219.231 61C237.5 61 237.5 45 255.769 45C274.038 45 274.038 121 292.308 121C310.577 121 310.577 149 328.846 149C347.115 149 347.115 1 365.385 1C383.654 1 383.654 81 401.923 81C420.192 81 420.192 129 438.462 129C456.731 129 456.731 25 475 25" stroke="#5D9CEC" stroke-linecap="round" stroke-width="3"></path>
-<defs>
-<linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear_dashboard" x1="237.5" x2="237.5" y1="1" y2="149">
-<stop stop-color="#5D9CEC" stop-opacity="0.2"></stop>
-<stop offset="1" stop-color="#5D9CEC" stop-opacity="0"></stop>
-</linearGradient>
-</defs>
-</svg>
-<div class="flex justify-around">
-<p class="text-text-light/70 dark:text-text-dark/70 text-[13px] font-bold leading-normal tracking-[0.015em]">Pzt</p>
-<p class="text-text-light/70 dark:text-text-dark/70 text-[13px] font-bold leading-normal tracking-[0.015em]">Sal</p>
-<p class="text-text-light/70 dark:text-text-dark/70 text-[13px] font-bold leading-normal tracking-[0.015em]">Çar</p>
-<p class="text-text-light/70 dark:text-text-dark/70 text-[13px] font-bold leading-normal tracking-[0.015em]">Per</p>
-<p class="text-text-light/70 dark:text-text-dark/70 text-[13px] font-bold leading-normal tracking-[0.015em]">Cum</p>
-<p class="text-text-light/70 dark:text-text-dark/70 text-[13px] font-bold leading-normal tracking-[0.015em]">Cmt</p>
-<p class="text-text-light/70 dark:text-text-dark/70 text-[13px] font-bold leading-normal tracking-[0.015em]">Paz</p>
-</div>
+<p class="text-text-light dark:text-text-dark text-base font-medium leading-normal">Son Çalışmalar</p>
+<div id="recentSessions" class="flex flex-col gap-3 py-4">
+<!-- Recent sessions will be loaded here -->
 </div>
 </div>
 </div>
 <div class="flex flex-col gap-6">
-<div class="flex flex-col justify-center items-center text-center gap-4 p-6 rounded-lg bg-white dark:bg-gray-800/50 shadow-sm border border-gray-200 dark:border-gray-700/50 h-full">
+<div class="flex flex-col gap-4 p-6 rounded-lg bg-white dark:bg-gray-800/50 shadow-sm border border-gray-200 dark:border-gray-700/50">
+<p class="text-text-light dark:text-text-dark text-base font-medium leading-normal">Ders Dağılımı</p>
+<div id="courseDistribution" class="flex flex-col gap-3 py-2">
+<!-- Course distribution will be loaded here -->
+</div>
+</div>
+<div class="flex flex-col justify-center items-center text-center gap-4 p-6 rounded-lg bg-white dark:bg-gray-800/50 shadow-sm border border-gray-200 dark:border-gray-700/50">
 <span class="material-symbols-outlined text-primary text-5xl">format_quote</span>
 <p class="text-text-light dark:text-text-dark text-lg font-medium leading-relaxed">Öne geçmenin sırrı başlamaktır.</p>
 <p class="text-text-light/60 dark:text-text-dark/60 text-sm">- Mark Twain</p>
@@ -144,5 +133,7 @@
 </main>
 </div>
 </div>
+<script src="js/storage.js"></script>
+<script src="js/dashboard.js"></script>
 <script src="js/theme.js"></script>
 </body></html>

@@ -68,6 +68,13 @@
   - Dynamic UI updates
   - Event management
   
+- **dashboard.js**: Dashboard/Index page controller
+  - Statistics calculation and display
+  - Animated number counters
+  - Progress visualization
+  - Recent sessions display
+  - Course distribution charts
+  
 - **theme.js**: Dark/light mode toggle
 
 ## Storage Keys
