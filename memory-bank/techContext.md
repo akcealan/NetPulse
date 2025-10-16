@@ -92,12 +92,16 @@
   - Delete all data with confirmations
   - Page refresh after operations
 
-- **stats.js**: Statistics page controller
+- **stats.js**: Enhanced statistics page controller
+  - Time-based filtering (Today/Week/Month/All)
   - General statistics calculations
   - Course-based performance analysis
+  - Topic-based analysis (top 5 best/worst)
+  - Trend analysis with 7-day bar charts
+  - Detailed metrics (streak, avg time per question)
   - Success rate and net calculations
   - Weekly improvement tracking
-  - Best/worst course identification
+  - Study streak calculation algorithm
   - Empty state handling
   
 - **theme.js**: Dark/light mode toggle

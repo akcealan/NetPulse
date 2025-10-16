@@ -69,9 +69,24 @@
 <div class="layout-content-container flex flex-col w-full max-w-6xl flex-1">
 <div class="flex flex-wrap justify-between items-center gap-4 p-4">
 <h1 class="text-text-light dark:text-text-dark text-3xl md:text-4xl font-display font-bold">NetPulse İstatistikleri</h1>
-<button class="p-2 rounded-full text-text-light dark:text-text-dark hover:bg-gray-200 dark:hover:bg-gray-700" id="theme-toggle">
-</button>
 </div>
+            
+            <!-- Filtre Butonları -->
+            <div class="flex flex-wrap gap-2 p-4">
+                <button data-filter="all" class="px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-white">
+                    Tüm Zamanlar
+                </button>
+                <button data-filter="today" class="px-4 py-2 rounded-lg font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                    Bugün
+                </button>
+                <button data-filter="week" class="px-4 py-2 rounded-lg font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                    Bu Hafta
+                </button>
+                <button data-filter="month" class="px-4 py-2 rounded-lg font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                    Bu Ay
+                </button>
+            </div>
+            
             <!-- Genel İstatistikler -->
             <div id="generalStats" class="p-4">
                 <!-- Dinamik yüklenecek -->
@@ -92,6 +107,29 @@
                     <div id="performanceSummary">
                         <!-- Dinamik yüklenecek -->
                     </div>
+                </div>
+            </div>
+            
+            <!-- Konu Bazlı İstatistikler -->
+            <div class="p-4">
+                <h2 class="text-xl font-bold text-text-light dark:text-text-dark mb-4">Konu Bazlı Analiz</h2>
+                <div id="topicStats">
+                    <!-- Dinamik yüklenecek -->
+                </div>
+            </div>
+            
+            <!-- Trend Analizi -->
+            <div class="p-4">
+                <div id="trendAnalysis">
+                    <!-- Dinamik yüklenecek -->
+                </div>
+            </div>
+            
+            <!-- Detaylı Metrikler -->
+            <div class="p-4">
+                <h2 class="text-xl font-bold text-text-light dark:text-text-dark mb-4">Detaylı Metrikler</h2>
+                <div id="detailedMetrics">
+                    <!-- Dinamik yüklenecek -->
                 </div>
             </div>
 </div>

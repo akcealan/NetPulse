@@ -1,27 +1,81 @@
-// NetPulse - İstatistikler Sayfası
+// NetPulse - Gelişmiş İstatistikler Sayfası
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Aktif filtre
+    let activeFilter = 'all'; // all, today, week, month
+
     // Sayfa yüklendiğinde
     init();
 
     function init() {
+        setupFilterButtons();
         loadAllStatistics();
+    }
+
+    function setupFilterButtons() {
+        const filterBtns = document.querySelectorAll('[data-filter]');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Aktif butonu güncelle
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-primary', 'text-white');
+                    b.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+                });
+                
+                this.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+                this.classList.add('bg-primary', 'text-white');
+                
+                activeFilter = this.dataset.filter;
+                loadAllStatistics();
+            });
+        });
+    }
+
+    function getFilteredSessions() {
+        const allSessions = Storage.getSessions();
+        const now = new Date();
+        
+        switch(activeFilter) {
+            case 'today':
+                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                return allSessions.filter(s => new Date(s.date) >= today);
+                
+            case 'week':
+                const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                return allSessions.filter(s => new Date(s.date) >= weekAgo);
+                
+            case 'month':
+                const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+                return allSessions.filter(s => new Date(s.date) >= monthAgo);
+                
+            default: // 'all'
+                return allSessions;
+        }
     }
 
     function loadAllStatistics() {
         const courses = Storage.getCourses();
-        const sessions = Storage.getSessions();
+        const sessions = getFilteredSessions();
 
         if (sessions.length === 0) {
             showEmptyState();
             return;
         }
 
-        // Genel istatistikleri hesapla ve göster
+        // Genel istatistikleri göster
         displayGeneralStats(sessions);
         
         // Ders bazlı istatistikleri göster
         displayCourseStats(courses, sessions);
+        
+        // Konu bazlı istatistikleri göster
+        displayTopicStats(courses, sessions);
+        
+        // Trend analizini göster
+        displayTrendAnalysis(sessions);
+        
+        // Detaylı metrikleri göster
+        displayDetailedMetrics(sessions);
         
         // Performans özetini göster
         displayPerformanceSummary(courses, sessions);
@@ -312,6 +366,251 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         `;
+    }
+
+    // === KONU BAZLI İSTATİSTİKLER ===
+
+    function displayTopicStats(courses, sessions) {
+        const container = document.getElementById('topicStats');
+        if (!container) return;
+
+        const topicStats = [];
+        courses.forEach(course => {
+            course.topics.forEach(topic => {
+                const topicSessions = sessions.filter(s => s.topicId === topic.id);
+                if (topicSessions.length === 0) return;
+
+                const totalQuestions = topicSessions.reduce((sum, s) => sum + s.correct + s.incorrect + s.blank, 0);
+                const totalCorrect = topicSessions.reduce((sum, s) => sum + s.correct, 0);
+                const totalNet = topicSessions.reduce((sum, s) => sum + s.net, 0);
+                const avgNet = (totalNet / topicSessions.length).toFixed(2);
+                const successRate = totalQuestions > 0 ? ((totalCorrect / totalQuestions) * 100).toFixed(1) : 0;
+
+                topicStats.push({
+                    courseName: course.name,
+                    topicName: topic.name,
+                    sessionCount: topicSessions.length,
+                    totalQuestions,
+                    totalCorrect,
+                    avgNet,
+                    successRate
+                });
+            });
+        });
+
+        if (topicStats.length === 0) {
+            container.innerHTML = `<div class="text-center py-8 text-gray-400"><p>Henüz konu bazlı veri yok</p></div>`;
+            return;
+        }
+
+        topicStats.sort((a, b) => parseFloat(b.avgNet) - parseFloat(a.avgNet));
+        const topTopics = topicStats.slice(0, 5);
+        const worstTopics = topicStats.slice(-5).reverse();
+
+        container.innerHTML = `
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-bold text-text-light dark:text-text-dark mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-green-500">trending_up</span>
+                        En Başarılı Konular
+                    </h3>
+                    <div class="space-y-3">
+                        ${topTopics.map(topic => `
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                                <div class="flex items-start justify-between mb-2">
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-text-light dark:text-text-dark">${topic.topicName}</p>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">${topic.courseName}</p>
+                                    </div>
+                                    <span class="text-2xl font-bold text-green-500">${topic.avgNet}</span>
+                                </div>
+                                <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400">
+                                    <span>${topic.sessionCount} çalışma</span>
+                                    <span>${topic.successRate}% başarı</span>
+                                    <span>${topic.totalQuestions} soru</span>
+                                </div>
+                                <div class="mt-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                                    <div class="bg-green-500 h-1.5 rounded-full" style="width: ${topic.successRate}%"></div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold text-text-light dark:text-text-dark mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-orange-500">priority_high</span>
+                        Geliştirilmesi Gereken Konular
+                    </h3>
+                    <div class="space-y-3">
+                        ${worstTopics.map(topic => `
+                            <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                                <div class="flex items-start justify-between mb-2">
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-text-light dark:text-text-dark">${topic.topicName}</p>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">${topic.courseName}</p>
+                                    </div>
+                                    <span class="text-2xl font-bold text-orange-500">${topic.avgNet}</span>
+                                </div>
+                                <div class="flex justify-between text-xs text-gray-600 dark:text-gray-400">
+                                    <span>${topic.sessionCount} çalışma</span>
+                                    <span>${topic.successRate}% başarı</span>
+                                    <span>${topic.totalQuestions} soru</span>
+                                </div>
+                                <div class="mt-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                                    <div class="bg-orange-500 h-1.5 rounded-full" style="width: ${topic.successRate}%"></div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // === TREND ANALİZİ ===
+
+    function displayTrendAnalysis(sessions) {
+        const container = document.getElementById('trendAnalysis');
+        if (!container) return;
+
+        const last7Days = [];
+        const now = new Date();
+        
+        for (let i = 6; i >= 0; i--) {
+            const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
+            const dateStr = date.toISOString().split('T')[0];
+            const daySessions = sessions.filter(s => s.date === dateStr);
+            
+            const totalNet = daySessions.reduce((sum, s) => sum + s.net, 0);
+            const totalQuestions = daySessions.reduce((sum, s) => sum + s.correct + s.incorrect + s.blank, 0);
+            
+            last7Days.push({
+                date: dateStr,
+                dayName: date.toLocaleDateString('tr-TR', { weekday: 'short' }),
+                sessionCount: daySessions.length,
+                totalNet,
+                totalQuestions
+            });
+        }
+
+        const maxNet = Math.max(...last7Days.map(d => d.totalNet), 1);
+        const maxQuestions = Math.max(...last7Days.map(d => d.totalQuestions), 1);
+
+        container.innerHTML = `
+            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+                <h3 class="text-lg font-bold text-text-light dark:text-text-dark mb-6">Son 7 Gün Trend Analizi</h3>
+                
+                <div class="mb-8">
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Günlük Net</p>
+                    <div class="flex items-end justify-between gap-2 h-40">
+                        ${last7Days.map(day => `
+                            <div class="flex-1 flex flex-col items-center gap-2">
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-t relative" style="height: ${(day.totalNet / maxNet * 100)}%">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-primary to-blue-300 rounded-t"></div>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-xs font-bold text-text-light dark:text-text-dark">${day.totalNet.toFixed(1)}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">${day.dayName}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Günlük Soru Sayısı</p>
+                    <div class="flex items-end justify-between gap-2 h-32">
+                        ${last7Days.map(day => `
+                            <div class="flex-1 flex flex-col items-center gap-2">
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-t relative" style="height: ${(day.totalQuestions / maxQuestions * 100)}%">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-success to-green-300 rounded-t"></div>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-xs font-bold text-text-light dark:text-text-dark">${day.totalQuestions}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">${day.dayName}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // === DETAYLI METRİKLER ===
+
+    function displayDetailedMetrics(sessions) {
+        const container = document.getElementById('detailedMetrics');
+        if (!container) return;
+
+        const totalQuestions = sessions.reduce((sum, s) => sum + s.correct + s.incorrect + s.blank, 0);
+        const totalDuration = sessions.reduce((sum, s) => sum + s.duration, 0);
+        
+        const avgTimePerQuestion = totalQuestions > 0 ? (totalDuration / totalQuestions).toFixed(2) : 0;
+        const avgQuestionsPerSession = sessions.length > 0 ? (totalQuestions / sessions.length).toFixed(1) : 0;
+        const avgDurationPerSession = sessions.length > 0 ? Math.round(totalDuration / sessions.length) : 0;
+        const streak = calculateStreak(sessions);
+
+        container.innerHTML = `
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="material-symbols-outlined text-primary">speed</span>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Soru/Dakika</p>
+                    </div>
+                    <p class="text-2xl font-bold text-text-light dark:text-text-dark">${avgTimePerQuestion}</p>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="material-symbols-outlined text-success">functions</span>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Ort. Soru/Çalışma</p>
+                    </div>
+                    <p class="text-2xl font-bold text-text-light dark:text-text-dark">${avgQuestionsPerSession}</p>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="material-symbols-outlined text-primary">schedule</span>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Ort. Süre/Çalışma</p>
+                    </div>
+                    <p class="text-2xl font-bold text-text-light dark:text-text-dark">${formatDuration(avgDurationPerSession)}</p>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="material-symbols-outlined text-orange-500">local_fire_department</span>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Çalışma Serisi</p>
+                    </div>
+                    <p class="text-2xl font-bold text-text-light dark:text-text-dark">${streak} gün</p>
+                </div>
+            </div>
+        `;
+    }
+
+    function calculateStreak(sessions) {
+        if (sessions.length === 0) return 0;
+        
+        const dates = [...new Set(sessions.map(s => s.date))].sort().reverse();
+        const today = new Date().toISOString().split('T')[0];
+        
+        if (dates[0] !== today) return 0;
+        
+        let streak = 1;
+        for (let i = 1; i < dates.length; i++) {
+            const prevDate = new Date(dates[i-1]);
+            const currDate = new Date(dates[i]);
+            const diffDays = Math.floor((prevDate - currDate) / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 1) {
+                streak++;
+            } else {
+                break;
+            }
+        }
+        
+        return streak;
     }
 
     // === YARDIMCI FONKSİYONLAR ===

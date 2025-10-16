@@ -9,15 +9,15 @@
 
 ## Recent Changes
 
-- Statistics page fully functional
-- Created stats.js for analytics
-- Implemented general statistics display
-- Added course-based analysis
-- Performance summary with insights
-- Success rate calculations
-- Weekly improvement tracking
-- Best/worst course identification
-- Empty state handling
+- Enhanced statistics page with advanced features
+- Added time-based filtering (Today/Week/Month/All)
+- Implemented topic-based analysis
+- Added trend analysis with 7-day charts
+- Detailed metrics (avg time per question, streak)
+- Top 5 best/worst topics display
+- Daily net and question count visualization
+- Study streak calculation
+- Interactive filter buttons
 
 ## Next Steps
 
@@ -49,3 +49,6 @@
 - Timer state persistence with auto-resume
 - Keyboard shortcuts for quick actions
 - Cross-page data transfer via LocalStorage
+- Time-based data filtering
+- Trend analysis with bar charts
+- Streak calculation algorithm

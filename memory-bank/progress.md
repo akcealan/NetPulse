@@ -29,11 +29,13 @@
 - JSON export/import functionality
 - Delete all data feature
 - File validation and error handling
-- Statistics page fully implemented
-- General statistics calculations
+- Statistics page fully implemented with advanced features
+- Time-based filtering (Today/Week/Month/All)
+- Topic-based analysis (top 5 best/worst)
+- Trend analysis with 7-day charts
+- Detailed metrics (streak, avg time, etc.)
 - Course-based performance analysis
 - Weekly improvement tracking
-- Best/worst course identification
 - Success rate and net calculations
 
 ## In Progress
