@@ -83,6 +83,14 @@
   - Elapsed time calculation
   - Data entry integration
   - Keyboard shortcuts
+
+- **settings.js**: Settings page controller
+  - Data statistics calculation
+  - JSON export (Blob + download)
+  - JSON import (FileReader API)
+  - File validation
+  - Delete all data with confirmations
+  - Page refresh after operations
   
 - **theme.js**: Dark/light mode toggle
 

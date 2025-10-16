@@ -77,27 +77,38 @@
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6 p-4">
 <div class="flex flex-col gap-6">
-<h2 class="text-[#111418] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Kullanıcı Bilgileri</h2>
+<h2 class="text-[#111418] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Veri İstatistikleri</h2>
 <div class="flex items-center gap-4 bg-white dark:bg-background-dark px-4 min-h-14 justify-between rounded-lg">
 <div class="flex items-center gap-4">
 <div class="text-[#111418] dark:text-white flex items-center justify-center rounded-lg bg-[#f0f2f4] dark:bg-white/10 shrink-0 size-10">
-<span class="material-symbols-outlined">person</span>
+<span class="material-symbols-outlined">school</span>
 </div>
-<p class="text-[#111418] dark:text-white text-base font-normal leading-normal flex-1 truncate">Ad Soyad</p>
+<p class="text-[#111418] dark:text-white text-base font-normal leading-normal flex-1 truncate">Toplam Ders</p>
 </div>
 <div class="shrink-0">
-<p class="text-[#111418] dark:text-white text-base font-normal leading-normal">Ahmet Yılmaz</p>
+<p id="totalCourses" class="text-[#111418] dark:text-white text-base font-bold leading-normal">0</p>
 </div>
 </div>
 <div class="flex items-center gap-4 bg-white dark:bg-background-dark px-4 min-h-14 justify-between rounded-lg">
 <div class="flex items-center gap-4">
 <div class="text-[#111418] dark:text-white flex items-center justify-center rounded-lg bg-[#f0f2f4] dark:bg-white/10 shrink-0 size-10">
-<span class="material-symbols-outlined">event</span>
+<span class="material-symbols-outlined">topic</span>
 </div>
-<p class="text-[#111418] dark:text-white text-base font-normal leading-normal flex-1 truncate">Sınav Tarihi</p>
+<p class="text-[#111418] dark:text-white text-base font-normal leading-normal flex-1 truncate">Toplam Konu</p>
 </div>
 <div class="shrink-0">
-<p class="text-[#111418] dark:text-white text-base font-normal leading-normal">2024-12-21</p>
+<p id="totalTopics" class="text-[#111418] dark:text-white text-base font-bold leading-normal">0</p>
+</div>
+</div>
+<div class="flex items-center gap-4 bg-white dark:bg-background-dark px-4 min-h-14 justify-between rounded-lg">
+<div class="flex items-center gap-4">
+<div class="text-[#111418] dark:text-white flex items-center justify-center rounded-lg bg-[#f0f2f4] dark:bg-white/10 shrink-0 size-10">
+<span class="material-symbols-outlined">description</span>
+</div>
+<p class="text-[#111418] dark:text-white text-base font-normal leading-normal flex-1 truncate">Toplam Kayıt</p>
+</div>
+<div class="shrink-0">
+<p id="totalSessions" class="text-[#111418] dark:text-white text-base font-bold leading-normal">0</p>
 </div>
 </div>
 </div>
@@ -105,30 +116,29 @@
 <div>
 <h2 class="text-[#111418] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Veri Yönetimi</h2>
 <div class="flex flex-col gap-4 p-4 bg-white dark:bg-background-dark rounded-lg">
-<button class="flex items-center justify-center gap-2 w-full px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition-colors">
+<input type="file" id="importFileInput" accept=".json" class="hidden" />
+<button id="importBtn" class="flex items-center justify-center gap-2 w-full px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition-colors">
 <span class="material-symbols-outlined">upload</span>
-                  Verileri İçe Aktar
-                </button>
-<button class="flex items-center justify-center gap-2 w-full px-6 py-3 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-primary/90 transition-colors">
+Verileri İçe Aktar
+</button>
+<button id="exportBtn" class="flex items-center justify-center gap-2 w-full px-6 py-3 bg-primary text-white font-semibold rounded-lg shadow-md hover:bg-primary/90 transition-colors">
 <span class="material-symbols-outlined">download</span>
-                  Verileri Dışa Aktar
-                </button>
-<button class="flex items-center justify-center gap-2 w-full px-6 py-3 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition-colors">
+Verileri Dışa Aktar
+</button>
+<button id="deleteAllBtn" class="flex items-center justify-center gap-2 w-full px-6 py-3 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition-colors">
 <span class="material-symbols-outlined">delete</span>
-                  Verileri Sil
-                </button>
-</div>
-</div>
-</div>
-</div>
-<div class="flex justify-end p-4 mt-8">
-<button class="px-8 py-3 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition-colors">
-              Değişiklikleri Kaydet
-            </button>
+Tüm Verileri Sil
+</button>
 </div>
 </div>
 </div>
 </div>
 </div>
+</div>
+</div>
+</div>
+</div>
+<script src="js/storage.js"></script>
+<script src="js/settings.js"></script>
 <script src="js/theme.js"></script>
 </body></html>
