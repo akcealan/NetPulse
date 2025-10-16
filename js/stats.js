@@ -34,19 +34,27 @@ document.addEventListener('DOMContentLoaded', function() {
     function getFilteredSessions() {
         const allSessions = Storage.getSessions();
         const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
         
         switch(activeFilter) {
             case 'today':
-                const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                return allSessions.filter(s => new Date(s.date) >= today);
+                // Bugünün tarih string'i
+                const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+                return allSessions.filter(s => s.date === todayStr);
                 
             case 'week':
-                const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                return allSessions.filter(s => new Date(s.date) >= weekAgo);
+                // Bu haftanın başlangıcı (Pazartesi)
+                const dayOfWeek = today.getDay(); // 0=Pazar, 1=Pazartesi, ...
+                const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // Pazar ise 6, diğerleri -1
+                const monday = new Date(today.getTime() - daysFromMonday * 24 * 60 * 60 * 1000);
+                const mondayStr = `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}`;
+                return allSessions.filter(s => s.date >= mondayStr);
                 
             case 'month':
-                const monthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-                return allSessions.filter(s => new Date(s.date) >= monthAgo);
+                // Bu ayın başlangıcı (1. gün)
+                const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+                const firstDayStr = `${firstDayOfMonth.getFullYear()}-${String(firstDayOfMonth.getMonth() + 1).padStart(2, '0')}-${String(firstDayOfMonth.getDate()).padStart(2, '0')}`;
+                return allSessions.filter(s => s.date >= firstDayStr);
                 
             default: // 'all'
                 return allSessions;
@@ -485,21 +493,30 @@ document.addEventListener('DOMContentLoaded', function() {
         const container = document.getElementById('trendAnalysis');
         if (!container) return;
 
+        // Local tarihi al (UTC değil)
         const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        
         let daysToShow = 7;
         let title = 'Son 7 Gün Trend Analizi';
         let dateFormat = { weekday: 'short' };
         
-        // Filtreye göre gün sayısını belirle
+        // Filtreye göre gün sayısını ve başlangıç tarihini belirle
+        let startDate = today;
+        
         if (activeFilter === 'month') {
-            // Bu ayın gün sayısını hesapla
-            const year = now.getFullYear();
-            const month = now.getMonth();
-            daysToShow = new Date(year, month + 1, 0).getDate();
+            // Bu ayın başından bugüne
+            startDate = new Date(today.getFullYear(), today.getMonth(), 1);
+            const daysSinceStart = Math.floor((today - startDate) / (24 * 60 * 60 * 1000)) + 1;
+            daysToShow = daysSinceStart;
             title = `Bu Ay Trend Analizi (${daysToShow} Gün)`;
             dateFormat = { day: 'numeric' };
         } else if (activeFilter === 'week') {
-            daysToShow = 7;
+            // Bu haftanın Pazartesi'sinden bugüne
+            const dayOfWeek = today.getDay();
+            const daysFromMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+            startDate = new Date(today.getTime() - daysFromMonday * 24 * 60 * 60 * 1000);
+            daysToShow = daysFromMonday + 1;
             title = 'Bu Hafta Trend Analizi';
             dateFormat = { weekday: 'short' };
         } else if (activeFilter === 'today') {
@@ -507,28 +524,76 @@ document.addEventListener('DOMContentLoaded', function() {
             title = 'Bugün';
             dateFormat = { hour: '2-digit', minute: '2-digit' };
         } else {
-            daysToShow = 7;
-            title = 'Son 7 Gün Trend Analizi';
-            dateFormat = { weekday: 'short' };
+            // Tüm Zamanlar - Aylık gruplandırma
+            // İlk veri tarihini bul
+            if (sessions.length > 0) {
+                const allDates = sessions.map(s => s.date).sort();
+                const firstDate = allDates[0];
+                const [firstYear, firstMonth] = firstDate.split('-').map(Number);
+                startDate = new Date(firstYear, firstMonth - 1, 1);
+                
+                // Ay sayısını hesapla
+                const monthsDiff = (today.getFullYear() - startDate.getFullYear()) * 12 + 
+                                  (today.getMonth() - startDate.getMonth()) + 1;
+                daysToShow = monthsDiff;
+                title = 'Tüm Zamanlar Trend Analizi (Aylık)';
+                dateFormat = { month: 'short' };
+            } else {
+                // Veri yoksa son 7 gün
+                startDate = new Date(today.getTime() - 6 * 24 * 60 * 60 * 1000);
+                daysToShow = 7;
+                title = 'Son 7 Gün Trend Analizi';
+                dateFormat = { weekday: 'short' };
+            }
         }
 
         const trendDays = [];
         
-        for (let i = daysToShow - 1; i >= 0; i--) {
-            const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-            const dateStr = date.toISOString().split('T')[0];
-            const daySessions = sessions.filter(s => s.date === dateStr);
-            
-            const totalNet = daySessions.reduce((sum, s) => sum + s.net, 0);
-            const totalQuestions = daySessions.reduce((sum, s) => sum + s.correct + s.incorrect + s.blank, 0);
-            
-            trendDays.push({
-                date: dateStr,
-                dayName: date.toLocaleDateString('tr-TR', dateFormat),
-                sessionCount: daySessions.length,
-                totalNet,
-                totalQuestions
-            });
+        // Tüm Zamanlar için aylık gruplandırma
+        if (activeFilter === 'all' && sessions.length > 0) {
+            for (let i = 0; i < daysToShow; i++) {
+                const monthDate = new Date(startDate.getFullYear(), startDate.getMonth() + i, 1);
+                const year = monthDate.getFullYear();
+                const month = monthDate.getMonth();
+                
+                // Bu aydaki tüm günleri filtrele
+                const monthSessions = sessions.filter(s => {
+                    const [sYear, sMonth] = s.date.split('-').map(Number);
+                    return sYear === year && sMonth === month + 1;
+                });
+                
+                const totalNet = monthSessions.reduce((sum, s) => sum + s.net, 0);
+                const totalQuestions = monthSessions.reduce((sum, s) => sum + s.correct + s.incorrect + s.blank, 0);
+                
+                trendDays.push({
+                    date: `${year}-${String(month + 1).padStart(2, '0')}`,
+                    dayName: monthDate.toLocaleDateString('tr-TR', { month: 'short', year: 'numeric' }),
+                    sessionCount: monthSessions.length,
+                    totalNet,
+                    totalQuestions
+                });
+            }
+        } else {
+            // Diğer filtreler için günlük
+            for (let i = 0; i < daysToShow; i++) {
+                const date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
+                const dateYear = date.getFullYear();
+                const dateMonth = String(date.getMonth() + 1).padStart(2, '0');
+                const dateDay = String(date.getDate()).padStart(2, '0');
+                const dateStr = `${dateYear}-${dateMonth}-${dateDay}`;
+                const daySessions = sessions.filter(s => s.date === dateStr);
+                
+                const totalNet = daySessions.reduce((sum, s) => sum + s.net, 0);
+                const totalQuestions = daySessions.reduce((sum, s) => sum + s.correct + s.incorrect + s.blank, 0);
+                
+                trendDays.push({
+                    date: dateStr,
+                    dayName: date.toLocaleDateString('tr-TR', dateFormat),
+                    sessionCount: daySessions.length,
+                    totalNet,
+                    totalQuestions
+                });
+            }
         }
 
         const maxNet = Math.max(...trendDays.map(d => d.totalNet), 1);

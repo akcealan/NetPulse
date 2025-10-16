@@ -2,7 +2,7 @@
 <html class="light" lang="tr"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Yeni Çalışma Kaydı Ekle</title>
+<title>NetPulse - Veri Girişi</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
@@ -166,8 +166,74 @@
 </div>
 </div>
 </div>
+
+<!-- Modal: Yeni Ders Ekle -->
+<div id="addCourseModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full p-6 transform transition-all">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xl font-bold text-text-light dark:text-text-dark">Yeni Ders Ekle</h3>
+            <button onclick="closeModal('addCourseModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">Ders Adı</label>
+                <input id="courseNameInput" type="text" placeholder="Örn: Matematik" 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary"/>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeModal('addCourseModal')" 
+                    class="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 text-text-light dark:text-text-dark hover:bg-gray-100 dark:hover:bg-gray-700 font-medium transition-colors">
+                    İptal
+                </button>
+                <button onclick="saveCourse()" 
+                    class="flex-1 px-4 py-3 rounded-lg bg-primary text-white hover:bg-primary/90 font-bold transition-colors">
+                    Ekle
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Yeni Konu Ekle -->
+<div id="addTopicModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full p-6 transform transition-all">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-xl font-bold text-text-light dark:text-text-dark">Yeni Konu Ekle</h3>
+            <button onclick="closeModal('addTopicModal')" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">Ders Seçin</label>
+                <select id="modalCourseSelect" 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option value="">Ders Seçin</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">Konu Adı</label>
+                <input id="topicNameInput" type="text" placeholder="Örn: Türev" 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary"/>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeModal('addTopicModal')" 
+                    class="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 text-text-light dark:text-text-dark hover:bg-gray-100 dark:hover:bg-gray-700 font-medium transition-colors">
+                    İptal
+                </button>
+                <button onclick="saveTopic()" 
+                    class="flex-1 px-4 py-3 rounded-lg bg-primary text-white hover:bg-primary/90 font-bold transition-colors">
+                    Ekle
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </div>
 <script src="js/storage.js"></script>
 <script src="js/dataentry.js"></script>
 <script src="js/theme.js"></script>
-</div></body></html>
+</body></html>

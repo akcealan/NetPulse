@@ -358,71 +358,43 @@ document.addEventListener('DOMContentLoaded', function() {
                 minutes: minutesInput.value,
                 seconds: secondsInput.value
             }); // Debug
-            
-            // Transfer flag'ini temizle
-            timerData.transferToDataEntry = false;
-            Storage.set(Storage.KEYS.TIMER_STATE, timerData);
-            
-            showNotification('Timer\'dan süre aktarıldı!', 'success');
-        }
-    }
 
-    // === MODAL YÖNETİMİ ===
+function setTodayDate() {
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.value = today;
+}
 
-    window.openModal = function(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.classList.remove('hidden');
-        }
-    };
+function resetForm() {
+    // Tarih hariç formu sıfırla
+    courseSelect.value = '';
+    topicSelect.value = '';
+    topicSelect.disabled = true;
+    correctInput.value = '';
+    incorrectInput.value = '';
+    blankInput.value = '';
+    hoursInput.value = '';
+    minutesInput.value = '';
+    secondsInput.value = '';
+    
+    // Konular listesini sıfırla
+    topicsList.innerHTML = '<li>- Konuları görmek için bir ders seçin -</li>';
+    
+    // Konu select'ini deaktif et
+    topicSelect.classList.add('bg-gray-100', 'dark:bg-gray-800', 'text-gray-400', 'dark:text-gray-500');
+    topicSelect.classList.remove('bg-white', 'dark:bg-gray-700', 'text-text-light', 'dark:text-text-dark');
+}
 
-    window.closeModal = function(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.classList.add('hidden');
-        }
-    };
-
-    // ESC tuşu ile modal kapatma
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            const modals = document.querySelectorAll('[id$="Modal"]');
-            modals.forEach(modal => {
-                if (!modal.classList.contains('hidden')) {
-                    closeModal(modal.id);
-                }
-            });
-        }
-    });
-
-    // Modal dışına tıklayınca kapatma
-    document.addEventListener('click', function(e) {
-        if (e.target.id && e.target.id.endsWith('Modal')) {
-            closeModal(e.target.id);
-        }
-    });
-
-    // Enter tuşu ile form gönderme
-    document.getElementById('courseNameInput')?.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            saveCourse();
-        }
-    });
-
-    document.getElementById('topicNameInput')?.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            saveTopic();
-        }
-    });
-
-    // Global fonksiyonları tanımla
-    window.saveCourse = saveCourse;
-    window.saveTopic = saveTopic;
-
-    // === BİLDİRİM SİSTEMİ ===
-
-    function showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
+function checkTimerData() {
+    // Timer sayfasından gelen süre verisi varsa
+    const timerData = Storage.get(Storage.KEYS.TIMER_STATE);
+    
+    console.log('Timer Data:', timerData); // Debug
+    
+    if (timerData && timerData.transferToDataEntry) {
+        const totalSeconds = timerData.seconds;
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
         notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg shadow-lg text-white font-medium transition-all duration-300 transform translate-x-0`;
         
         // Tip'e göre renk
