@@ -91,6 +91,14 @@
   - File validation
   - Delete all data with confirmations
   - Page refresh after operations
+
+- **stats.js**: Statistics page controller
+  - General statistics calculations
+  - Course-based performance analysis
+  - Success rate and net calculations
+  - Weekly improvement tracking
+  - Best/worst course identification
+  - Empty state handling
   
 - **theme.js**: Dark/light mode toggle
 

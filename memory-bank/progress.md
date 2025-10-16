@@ -29,20 +29,20 @@
 - JSON export/import functionality
 - Delete all data feature
 - File validation and error handling
+- Statistics page fully implemented
+- General statistics calculations
+- Course-based performance analysis
+- Weekly improvement tracking
+- Best/worst course identification
+- Success rate and net calculations
 
 ## In Progress
 
-- Detailed statistics page
+- None (Core features completed)
 
 ## To Do
 
-1. Detailed Statistics Page
-   - Advanced filtering
-   - Charts and graphs
-   - Performance analytics
-   - Trend analysis
-
-2. Enhanced Features
+1. Enhanced Features
    - Advanced data filtering
    - Course/topic editing
    - Data backup reminders

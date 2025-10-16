@@ -72,41 +72,34 @@
 <button class="p-2 rounded-full text-text-light dark:text-text-dark hover:bg-gray-200 dark:hover:bg-gray-700" id="theme-toggle">
 </button>
 </div>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 p-4">
-<div class="lg:col-span-2 flex flex-col gap-6">
-<div class="flex flex-col gap-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-container-dark p-6">
-<p class="text-text-light dark:text-text-dark text-lg font-display font-semibold">Derse Göre Ortalama Net Grafiği</p>
-<div class="w-full h-64 bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center">
-<p class="text-gray-500 dark:text-gray-400">Grafik alanı</p>
-</div>
-</div>
-<div class="flex flex-col gap-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-container-dark p-6">
-<p class="text-text-light dark:text-text-dark text-lg font-display font-semibold">Haftalık Toplam Zaman Grafiği</p>
-<div class="w-full h-64 bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center">
-<p class="text-gray-500 dark:text-gray-400">Grafik alanı</p>
-</div>
-</div>
-</div>
-<div class="flex flex-col gap-6">
-<div class="flex flex-col gap-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-container-dark p-6">
-<p class="text-text-light dark:text-text-dark text-lg font-display font-semibold">Konu Başarı Dağılımı</p>
-<div class="w-full h-64 bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center">
-<p class="text-gray-500 dark:text-gray-400">Grafik alanı</p>
-</div>
-</div>
-<div class="flex flex-col gap-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-container-dark p-6">
-<h3 class="text-lg font-semibold font-display text-text-light dark:text-text-dark">Özet</h3>
-<div class="space-y-3">
-<p class="text-gray-600 dark:text-gray-300">Bu hafta <span class="font-bold text-success">12%</span> gelişim gösterdiniz.</p>
-<p class="text-gray-600 dark:text-gray-300">En başarılı dersiniz: <span class="font-bold text-primary">Cebir</span>.</p>
-<p class="text-gray-600 dark:text-gray-300">Toplam <span class="font-bold text-primary">520</span> soru çözdünüz.</p>
+            <!-- Genel İstatistikler -->
+            <div id="generalStats" class="p-4">
+                <!-- Dinamik yüklenecek -->
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 p-4">
+                <!-- Ders Bazlı İstatistikler -->
+                <div class="lg:col-span-2">
+                    <h2 class="text-xl font-bold text-text-light dark:text-text-dark mb-4">Ders Bazlı Analiz</h2>
+                    <div id="courseStats" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Dinamik yüklenecek -->
+                    </div>
+                </div>
+                
+                <!-- Performans Özeti -->
+                <div>
+                    <h2 class="text-xl font-bold text-text-light dark:text-text-dark mb-4">Performans Özeti</h2>
+                    <div id="performanceSummary">
+                        <!-- Dinamik yüklenecek -->
+                    </div>
+                </div>
+            </div>
 </div>
 </div>
 </div>
 </div>
 </div>
-</div>
-</div>
-</div>
+<script src="js/storage.js"></script>
+<script src="js/stats.js"></script>
 <script src="js/theme.js"></script>
 </body></html>
