@@ -2,7 +2,7 @@
 
 NetPulse, öğrencilerin ders çalışma süreçlerini düzenlemesine ve performanslarını takip etmesine yardımcı olan tarayıcı tabanlı bir çalışma takip uygulamasıdır.
 
-[Canlı Demoyu Aç](https://huxkon.github.io/NetPulse/) | [Kaynak Kodları Görüntüle](https://github.com/huxkon/NetPulse)
+[Canlı Demoyu Aç](https://akcealan.github.io/NetPulse/) | [Kaynak Kodları Görüntüle](https://github.com/akcealan/NetPulse)
 
 ## Proje Hakkında
 
@@ -98,4 +98,4 @@ The application works without an account or backend. All user data is stored loc
 
 ## Geliştirici
 
-[huxkon](https://github.com/huxkon)
+[akcealan](https://github.com/akcealan)
